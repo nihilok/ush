@@ -2,14 +2,14 @@ import time
 import uuid
 from typing import Optional
 
-from data.constants import DB_PATH, SUBDOMAIN
+from data.constants import DB_PATH, BASE_URL
 from data.short_urls import ShortURLDatabase
 
 
 class URLShortener:
 
     DEFAULT_EXPIRY = 3600 * 24 * 7
-    DOMAIN = SUBDOMAIN
+    DOMAIN = BASE_URL
 
     @classmethod
     async def shorten(cls, url: str, expiry_timestamp: Optional[int] = None):
