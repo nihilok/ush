@@ -23,7 +23,10 @@ class UrlBody(BaseModel):
 
 @app.post("/")
 async def shorten(body: UrlBody, user: User = Depends(logged_in_user)):
-    return {"url": await URLShortener.shorten(body.url)}
+    try:
+        return {"url": await URLShortener.shorten(body.url)}
+    except ValueError as e:
+        raise HTTPException(400, str(e))
 
 
 @app.get("/{key}/")

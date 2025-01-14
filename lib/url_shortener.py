@@ -1,3 +1,4 @@
+import re
 import time
 import uuid
 from typing import Optional
@@ -13,6 +14,18 @@ class URLShortener:
 
     @classmethod
     async def shorten(cls, url: str, expiry_timestamp: Optional[int] = None):
+        # check the url is a valid url
+        pattern = re.compile(
+            r"^(?:http|ftp)s?://"
+            # domain...
+            r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+"
+            r"(?:[a-z]{2,6}\.?|[a-z0-9-]{2,}\.?)"
+            r"(?::\d+)?"
+            r"(?:/?|[/?]\S+)$",
+            re.IGNORECASE,
+        )
+        if not pattern.match(url):
+            raise ValueError("Invalid URL")
         key = uuid.uuid5(uuid.NAMESPACE_URL, url).hex[:8]
         await ShortURLDatabase(DB_PATH).insert_url(
             key,
