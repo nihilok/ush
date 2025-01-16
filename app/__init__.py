@@ -7,7 +7,14 @@ from starlette.responses import RedirectResponse
 
 from lib.url_shortener import URLShortener
 
-app = FastAPI()
+
+if os.getenv("USH_DEBUG"):
+    docs_url = "/docs"
+else:
+    docs_url = ""
+
+app = FastAPI(openapi_url=docs_url)
+
 
 settings.user_db_path = os.getenv("USER_DB_PATH", "users.sqlite3")
 settings.secret_key = os.getenv("SECRET_KEY", "SoMeThInG_-sUp3Rs3kREt!!")
