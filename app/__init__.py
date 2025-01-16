@@ -21,6 +21,12 @@ class UrlBody(BaseModel):
     url: str
 
 
+@app.get("/")
+async def redirect_to_app():
+    ui_url = os.getenv("UI_URL", "http://localhost:5173")
+    return RedirectResponse(ui_url)
+
+
 @app.post("/", dependencies=[Depends(logged_in_user)])
 async def shorten(body: UrlBody):
     try:
