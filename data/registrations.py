@@ -87,5 +87,5 @@ if __name__ == "__main__":
 
     from fast_auth import settings
 
-    asyncio.run(RegistrationTable(settings.db_path).create_table())
+    asyncio.run(RegistrationTable(settings.user_db_path).create_table())
     print("Done!")
