@@ -1,3 +1,4 @@
 /.idea/
-short_urls.db
 **/__pycache__/
+/short_urls.db
+/users.db

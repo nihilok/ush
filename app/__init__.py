@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 
 from lib.url_shortener import URLShortener
+from app.auth_router import router as auth_router
 
 
 if os.getenv("USH_DEBUG"):
@@ -14,7 +15,7 @@ else:
     docs_url = ""
 
 app = FastAPI(openapi_url=docs_url)
-
+app.include_router(auth_router)
 
 settings.user_db_path = os.getenv("USER_DB_PATH", "users.sqlite3")
 settings.secret_key = os.getenv("SECRET_KEY", "SoMeThInG_-sUp3Rs3kREt!!")
