@@ -23,4 +23,4 @@ async def register(form_data: OAuth2PasswordRequestForm = Depends()):
     await save_registration(email)
     await email_verification(email)
 
-    return RedirectResponse("/")
+    return {}
