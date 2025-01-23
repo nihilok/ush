@@ -6,8 +6,6 @@ import aiosqlite
 class RegistrationTable:
     def __init__(self, db_path):
         self.db_path = db_path
-        if not self.check_table_exists():
-            self.create_table()
 
     async def create_table(self):
         async with aiosqlite.connect(self.db_path) as db:
