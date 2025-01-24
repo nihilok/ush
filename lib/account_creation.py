@@ -49,7 +49,7 @@ def send_verification_email(email, verification_link):
     msg.attach(MIMEText(body, 'plain'))
 
     try:
-        server = smtplib.SMTP('smtp.example.com', 587)
+        server = smtplib.SMTP(os.getenv("MAILSERVER"), 465)
         server.starttls()
         server.login(sender_email, sender_password)
         text = msg.as_string()
