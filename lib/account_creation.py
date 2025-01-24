@@ -1,4 +1,3 @@
-import hashlib
 import os
 import time
 
@@ -60,17 +59,25 @@ def send_verification_email(email, verification_link):
         print(f"Failed to send email: {e}")
 
 
+from cryptography.fernet import Fernet
+
+# Generate a key for encryption and decryption
+# You should store this key securely and not regenerate it every time
+key = os.environ.get("FERNET_KEY")
+if not key:
+    key = Fernet.generate_key()
+    os.environ["FERNET_KEY"] = key.decode()
+
+cipher_suite = Fernet(key)
+
 def generate_verification_link(username):
-    salt = os.environ["USH_SALT"]
-    username = f"{username}{salt}"
-    username_hash = hashlib.sha256(username.encode()).hexdigest()
-    return f"{BASE_URL}verify/{username_hash}/"
+    encrypted_username = cipher_suite.encrypt(username.encode()).decode()
+    return f"{BASE_URL}verify/{encrypted_username}/"
 
 
-def decrypt_verification_link(username_hash):
-    salt = os.environ["USH_SALT"]
-    username = hashlib.sha256(username_hash.encode()).hexdigest()
-    return username[:-len(salt)]
+def decrypt_username(encrypted_username):
+    decrypted_username = cipher_suite.decrypt(encrypted_username.encode()).decode()
+    return decrypted_username
 
 async def email_verification(email):
     # Send email verification link to the user

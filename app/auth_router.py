@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from data.registrations import RegistrationTable
 from lib.account_creation import check_existing_registration, email_verification, save_registration, \
-    decrypt_verification_link
+    decrypt_username
 
 router = APIRouter()
 
@@ -28,6 +28,7 @@ async def register(form_data: OAuth2PasswordRequestForm = Depends()):
 
 @router.get("/verify/{code}/")
 async def verify(code: str):
-    username = decrypt_verification_link(code)
+    username = decrypt_username(code)
+    print(username)
     await RegistrationTable(settings.user_db_path).delete_by_username(username)
     return {}
