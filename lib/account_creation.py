@@ -49,7 +49,7 @@ def send_verification_email(email, verification_link):
     msg.attach(MIMEText(body, 'plain'))
 
     try:
-        server = smtplib.SMTP(os.getenv("MAILSERVER"), 465)
+        server = smtplib.SMTP(os.getenv("MAILSERVER"), 587)
         server.starttls()
         server.login(sender_email, sender_password)
         text = msg.as_string()
@@ -64,7 +64,7 @@ def generate_verification_link(username):
     salt = os.environ["USH_SALT"]
     username = f"{username}{salt}"
     username_hash = hashlib.sha256(username.encode()).hexdigest()
-    return f"{BASE_URL}/verify/{username_hash}/"
+    return f"{BASE_URL}verify/{username_hash}/"
 
 
 def decrypt_verification_link(username_hash):
