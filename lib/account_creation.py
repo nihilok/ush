@@ -4,7 +4,7 @@ import time
 
 from fast_auth import settings
 
-from cli import BASE_URL
+from data.constants import BASE_URL
 from data.registrations import RegistrationTable
 
 
