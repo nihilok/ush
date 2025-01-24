@@ -1,10 +1,10 @@
+from fast_auth import User, settings
 from fastapi import APIRouter, Depends, HTTPException
-
-from fast_auth import User
 from fastapi.security import OAuth2PasswordRequestForm
-from starlette.responses import RedirectResponse
 
-from lib.account_creation import check_existing_registration, email_verification, save_registration
+from data.registrations import RegistrationTable
+from lib.account_creation import check_existing_registration, email_verification, save_registration, \
+    decrypt_verification_link
 
 router = APIRouter()
 
@@ -23,4 +23,11 @@ async def register(form_data: OAuth2PasswordRequestForm = Depends()):
     await save_registration(email)
     await email_verification(email)
 
+    return {}
+
+
+@router.get("/verify/{code}/")
+async def verify(code: str):
+    username = decrypt_verification_link(code)
+    await RegistrationTable(settings.user_db_path).delete_by_username(username)
     return {}
