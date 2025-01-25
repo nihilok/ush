@@ -82,13 +82,15 @@ class RegistrationTable:
 
     async def delete_by_username(self, username):
         async with aiosqlite.connect(self.db_path) as db:
-            await db.execute(
+            async with db.execute(
                 """
-                DELETE FROM registration WHERE username = ?
+                DELETE FROM registration WHERE username = ? RETURNING username
             """,
                 (username,),
-            )
-            await db.commit()
+            ) as cursor:
+                rows = await cursor.fetchall()
+                await db.commit()
+                return not not rows
 
 if __name__ == "__main__":
     import asyncio
