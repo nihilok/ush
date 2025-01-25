@@ -5,7 +5,7 @@ from starlette.responses import HTMLResponse
 
 from data.registrations import RegistrationTable
 from lib.account_creation import check_existing_registration, email_verification, save_registration, \
-    decrypt_username
+    decrypt_username, VERIFICATION_PAGE
 
 router = APIRouter()
 
@@ -32,5 +32,5 @@ async def verify(code: str):
     username = decrypt_username(code)
     if await RegistrationTable(settings.user_db_path).delete_by_username(username):
         return HTMLResponse(
-            content='<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body><h1>Email verified!</h1></body></html>')
+            content=VERIFICATION_PAGE)
     raise HTTPException(400, "Invalid verification code")

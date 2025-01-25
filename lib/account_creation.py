@@ -33,6 +33,17 @@ If you do nothing, your account will be removed in 1-2 hours, and your data will
 USH Team
 """
 
+VERIFICATION_PAGE = """\
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Email verified!</h1>
+    <a href="/">Home</a>
+</body>
+</html>
+"""
 
 def send_verification_email(email, verification_link):
     sender_email = os.getenv("VERIFY_EMAIL_ADDRESS")
