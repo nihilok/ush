@@ -65,7 +65,6 @@ def send_verification_email(email, verification_link):
         text = msg.as_string()
         server.sendmail(sender_email, email, text)
         server.quit()
-        print("Email sent successfully")
     except Exception as e:
         print(f"Failed to send email: {e}")
 

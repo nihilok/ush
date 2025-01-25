@@ -14,6 +14,8 @@ class URLShortener:
 
     @classmethod
     async def shorten(cls, url: str, expiry_timestamp: Optional[int] = None):
+        url = url.strip().lower()
+
         # check the url is a valid url
         pattern = re.compile(
             r"^(?:http|ftp)s?://"
@@ -26,7 +28,9 @@ class URLShortener:
         )
         if not pattern.match(url):
             raise ValueError("Invalid URL")
+
         key = uuid.uuid5(uuid.NAMESPACE_URL, url).hex[:8]
+
         await ShortURLDatabase(DB_PATH).insert_url(
             key,
             url,
